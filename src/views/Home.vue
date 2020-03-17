@@ -10,17 +10,21 @@
     to the world, but for now, only he gets to enjoy it. Stay tuned!</p>
 
   <div class="buttonLinks">
-    <router-link to="/funLinks" class="linkButton" id="funButt">Fun</router-link>
-    <router-link to="/workLinks" class="linkButton" id="workButt">Work</router-link>
-    <router-link to="/schoolLinks" class="linkButton" id="schoolButt">School</router-link>
-    <router-link to="/???" class="linkButton" id="otherButt">Other</router-link>
+    <ButtonLink text="Fun" link="/funLinks" color="#5ff6a6" />
+    <ButtonLink text="Work" link="/workLinks" color="#ff5722" />
+    <ButtonLink text="School" link="/schoolLinks" color="#2196f3" />
+    <ButtonLink text="Other" link="/otherLinks" color="#f2e35a" />
   </div>
 </div>
 </template>
 
 <script>
+import ButtonLink from "../components/buttonLink.vue"
 export default {
   name: 'Home',
+  components: {
+    ButtonLink,
+  },
 }
 </script>
 
@@ -33,47 +37,5 @@ export default {
 
 p {
   text-align: left;
-}
-
-.buttonLinks {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.linkButton {
-  width: 30%;
-  font-size: 1.5rem;
-  text-decoration: none;
-  color: #000;
-  padding: .75rem;
-  margin: 1rem 1.5rem 0 1.5rem;
-  border: 3px outset;
-  border-radius: 9px;
-}
-
-.linkButton:active {
-  color: blue;
-}
-
-.linkButton:visited {
-  text-decoration: none;
-  color: #000;
-}
-
-#funButt {
-  background-color: #5ff6a6;
-}
-
-#workButt {
-  background-color: #ff5722;
-}
-
-#schoolButt {
-  background-color: #2196f3;
-}
-
-#otherButt {
-  background-color: #f2e35a;
 }
 </style>

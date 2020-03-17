@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Fun from '../views/funLinks.vue'
 import Work from '../views/workLinks.vue'
 import School from '../views/schoolLinks.vue'
+import Other from '../views/otherLinks.vue'
+import Create from '../views/createLink.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/schoolLinks',
     name: 'School',
     component: School
+  },
+  {
+    path: '/otherLinks',
+    name: 'Other',
+    component: Other
+  },
+  {
+    path: '/createLink',
+    name: 'Create',
+    component: Create
   }
 
 ]
