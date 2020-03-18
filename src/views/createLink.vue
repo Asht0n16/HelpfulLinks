@@ -26,6 +26,9 @@
         <option id="yellowO">Yellow</option>
       </select>
 
+      <label for="newPic">Insert a Picture for the new link.<i>(For now, dummy images are used)</i></label>
+      <input disabled id="newPic" placeholder="Future place to add pics.">
+
       <button>Create</button>
     </form>
   </div>

@@ -9,7 +9,8 @@
   margin: '.5rem 1.5rem .5rem 1.5rem',
   border: '3px black outset',
   borderRadius: '9px'
-}">{{text}}</a>
+}">{{text}}
+  <img :src="imgSrc" /></a>
 </template>
 
 <script>
@@ -18,9 +19,13 @@ export default {
   props: {
     text: String,
     link: String,
-    color: String
+    color: String,
   },
-
+  data() {
+    return {
+      imgSrc: this.$root.$data.pictures[Math.floor(Math.random() * 50)].src,
+    }
+  }
 }
 </script>
 
