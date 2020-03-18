@@ -1,10 +1,10 @@
 <template>
 <div class="create">
-  <ButtonLink text="Home" link="/" color="#5ff6a6" />
+  <InnerLink text="Home" link="/" color="#5ff6a6" />
   <h1>Create a New Link</h1>
   <div class="formContainer">
-    <form class="pure-form pure-form-stacked" id="newLink">
-      <label for="section">Select a section to insert new link into</label>
+    <form class="pure-form pure-form-stacked" id="newLink" @submit.prevent="createLink()">
+      <label for="section">Select a section to insert the new link into.</label>
       <select id="section" v-model="newSection">
         <option>Fun</option>
         <option>Work</option>
@@ -12,13 +12,13 @@
         <option>Other</option>
       </select>
 
-      <label for="newText">Insert text for the new link</label>
+      <label for="newText">Insert the text to be on the new link.</label>
       <input id="newText" placeholder="New Text" v-model="newText">
 
-      <label for="newLink">Insert address for the new link</label>
+      <label for="newLink">Insert the web address for the new link. <i>(Be sure to include the "http[s]://")</i></label>
       <input id="newLink" placeholder="New Address" v-model="newAddress">
 
-      <label for="newColor">Choose a color for the new link</label>
+      <label for="newColor">Choose a color for the new link.</label>
       <select id="newColor" v-model="newColor">
         <option id="greenO">Green</option>
         <option id="redO">Red</option>
@@ -26,18 +26,18 @@
         <option id="yellowO">Yellow</option>
       </select>
 
-      <button @click="createLink">Create</button>
+      <button>Create</button>
     </form>
   </div>
 </div>
 </template>
 
 <script>
-import ButtonLink from "../components/buttonLink.vue"
+import InnerLink from "../components/innerLink.vue"
 export default {
   name: "Create",
   components: {
-    ButtonLink,
+    InnerLink,
   },
   data() {
     return {
@@ -68,7 +68,10 @@ export default {
         this.$root.$data.funLinks.push(newLink);
       } else if (this.newSection === 'Work') {
         this.$root.$data.workLinks.push(newLink);
-        console.log("added!");
+      } else if (this.newSection === 'School') {
+        this.$root.$data.schoolLinks.push(newLink);
+      } else if (this.newSection === 'Other') {
+        this.$root.$data.otherLinks.push(newLink);
       }
     }
   }

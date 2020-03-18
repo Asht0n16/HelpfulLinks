@@ -1,22 +1,30 @@
 <template>
 <div class="linkPage">
-  <ButtonLink text="Home" link="/" color="#f2e35a" />
+  <InnerLink text="Home" link="/" color="#f2e35a" />
   <h1>Other Links!</h1>
 
   <div class="buttonLinks">
-
+    <!-- Here's the loop that will go through all links in the array once I can get data to be permanent-->
+    <OuterLink v-for="link in links" :key="link.text" :text="link.text" :link="link.link" :color="link.color" />
   </div>
-  <ButtonLink text="Create New Link" link="/createLink" color="#f2e35a" />
+  <InnerLink text="Create New Link" link="/createLink" color="#f2e35a" />
 </div>
 </template>
 
 <script>
-import ButtonLink from "../components/buttonLink.vue"
+import InnerLink from "../components/innerLink.vue"
+import OuterLink from "../components/outerLink.vue"
 export default {
   name: 'Other',
   components: {
-    ButtonLink,
+    InnerLink,
+    OuterLink
   },
+  computed: {
+    links() {
+      return this.$root.$data.otherLinks;
+    }
+  }
 }
 </script>
 

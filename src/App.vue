@@ -30,7 +30,15 @@ body {
   justify-content: space-between;
 }
 
-.linkPage {
+@media only screen and (max-width: 560px) {
+  .buttonLinks {
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+}
+
+.linkPage,
+.home {
   width: 70%;
   margin: 0 auto;
   margin-bottom: 50px;

@@ -1,5 +1,5 @@
 <template>
-<a :href="link" :id="text" :style="{
+<router-link @submit.prevent :to="link" :id="text" :style="{
   backgroundColor: color,
   width: '30%',
   fontSize: '1.5rem',
@@ -9,12 +9,12 @@
   margin: '.5rem 1.5rem .5rem 1.5rem',
   border: '3px black outset',
   borderRadius: '9px'
-}">{{text}}</a>
+}">{{text}}</router-link>
 </template>
 
 <script>
 export default {
-  name: 'buttonLink',
+  name: 'innerLink',
   props: {
     text: String,
     link: String,

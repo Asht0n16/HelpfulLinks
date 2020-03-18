@@ -10,29 +10,29 @@
     to the world, but for now, only he gets to enjoy it. Stay tuned!</p>
 
   <div class="buttonLinks">
-    <ButtonLink text="Fun" link="/funLinks" color="#5ff6a6" />
-    <ButtonLink text="Work" link="/workLinks" color="#ff5722" />
-    <ButtonLink text="School" link="/schoolLinks" color="#2196f3" />
-    <ButtonLink text="Other" link="/otherLinks" color="#f2e35a" />
+    <InnerLink text="Fun" link="/funLinks" color="#5ff6a6" />
+    <InnerLink text="Work" link="/workLinks" color="#ff5722" />
+    <InnerLink text="School" link="/schoolLinks" color="#2196f3" />
+    <InnerLink text="Other" link="/otherLinks" color="#f2e35a" />
+  </div>
+  <div class="filler">
   </div>
 </div>
 </template>
 
 <script>
-import ButtonLink from "../components/buttonLink.vue"
+import InnerLink from "../components/innerLink.vue"
 export default {
   name: 'Home',
   components: {
-    ButtonLink,
+    InnerLink,
   },
 }
 </script>
 
 <style scoped>
-.home {
-  width: 70%;
-  margin: 0 auto;
-  text-align: center;
+.filler {
+  height: 50px;
 }
 
 p {
