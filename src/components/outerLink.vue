@@ -1,5 +1,5 @@
 <template>
-<a :href="link" :id="text" :style="{
+<a target="_blank" :href="link" :id="text" :style="{
   backgroundColor: color,
   //width: '30%',
   fontSize: '1.5rem',
