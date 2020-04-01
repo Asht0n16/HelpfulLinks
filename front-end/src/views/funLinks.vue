@@ -15,13 +15,31 @@
     </div>
     <button @click="toggleEdit">Edit</button>
   </div>
+
   <div v-if="edit">
     <h1>Click on a Link to Edit</h1>
-    <InnerLink text="Create New Link" link="/createLink" color="#5ff6a6" />
-    <p></p>
     <div class="buttonLinks">
-      <OuterLink v-for="link in links" :key="link.text" :text="link.text" :link="link.link" :color="link.color" />
+      <div v-for="link in links" :key="link.text">
+        <EditLink :text="link.text" :link="link.link" :color="link.color" />
+        <button @click="selectLink(link)">select</button>
+      </div>
     </div>
+    <p></p>
+
+    <div v-if="selectedLink">
+      <h1>Item Selected:</h1>
+      <p>Name:</p>
+      <input v-model="selectedLink.text">
+      <p>Link:</p>
+      <input v-model="selectedLink.link">
+      <p>Color:</p>
+      <input v-model="selectedLink.color">
+      <button @click="editLink">Edit Link</button>
+      <button @click="deleteLink">Delete</button>
+    </div>
+
+    <p></p>
+    <InnerLink text="Create New Link" link="/createLink" color="#5ff6a6" />
     <button @click="toggleEdit">Done</button>
   </div>
 
@@ -32,17 +50,21 @@
 import axios from 'axios';
 import InnerLink from "../components/innerLink.vue";
 import OuterLink from "../components/outerLink.vue";
+import EditLink from "../components/editLink.vue";
 export default {
   name: 'Fun',
   data() {
     return {
       links: [],
       edit: false,
+      selectedLink: null,
+      selected: false,
     }
   },
   components: {
     InnerLink,
-    OuterLink
+    OuterLink,
+    EditLink
   },
   created() {
     this.getLinks();
@@ -51,7 +73,6 @@ export default {
     async getLinks() {
       try {
         let list = await axios.get("/api/funlinks");
-        console.log(list.data);
         this.links = list.data;
         return true;
       } catch (error) {
@@ -60,6 +81,9 @@ export default {
     },
     toggleEdit() {
       this.edit = !this.edit;
+    },
+    selectLink(link) {
+      this.selectedLink = link;
     }
   }
 }
