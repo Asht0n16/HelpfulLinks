@@ -26,11 +26,12 @@
         <option id="yellowO">Yellow</option>
       </select>
 
-      <label for="newPic">Insert a Picture for the new link.<i>(For now, dummy images are used)</i></label>
-      <input disabled id="newPic" placeholder="Future place to add pics.">
-
       <button>Create</button>
     </form>
+  </div>
+  <div v-if="added">
+    <EditLink :text="added.text" :color="added.color" />
+    <p>Link added to {{newSection}} links.</p>
   </div>
 </div>
 </template>
@@ -38,10 +39,12 @@
 <script>
 import axios from 'axios';
 import InnerLink from "../components/innerLink.vue";
+import EditLink from "../components/editLink.vue";
 export default {
   name: "Create",
   components: {
     InnerLink,
+    EditLink,
   },
   data() {
     return {
@@ -80,7 +83,6 @@ export default {
       } else if (this.newSection === 'Other') {
         this.$root.$data.otherLinks.push(newLink);
       }
-
     }
   }
 }

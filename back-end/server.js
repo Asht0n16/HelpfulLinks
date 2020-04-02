@@ -52,4 +52,32 @@ app.post('/api/funlinks', async (req, res) => {
   }
 });
 
+app.put('/api/funlinks/:id', async (req, res) => {
+  try {
+    let link = await FunLinks.findOne({
+      _id: req.params.id
+    });
+    link.text = req.body.text;
+    link.link = req.body.link;
+    link.color = req.body.color;
+    link.save();
+    res.send(link);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+app.delete('/api/funlinks/:id', async (req, res) => {
+  try {
+    await FunLinks.deleteOne({
+      _id: req.params.id
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+})
+
 app.listen(3001, () => console.log('Server listening on port 3001!'));
