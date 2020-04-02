@@ -15,7 +15,7 @@
     <h1>Click on a Link to Edit</h1>
     <div class="buttonLinks">
       <div v-for="link in links" :key="link.text">
-        <EditLink :text="link.text" :link="link.link" :color="link.color" />
+        <DisabledLink :text="link.text" :color="link.color" />
         <button @click="selectLink(link)">select</button>
       </div>
     </div>
@@ -23,20 +23,7 @@
 
     <div v-if="selectedLink">
       <h1>Item Selected:</h1>
-      <div class="editRow">
-        <p>Name:</p>
-        <input v-model="selectedLink.text">
-      </div>
-      <div class="editRow">
-        <p>Link:</p>
-        <input v-model="selectedLink.link">
-      </div>
-      <div class="editRow">
-        <p>Color:</p>
-        <input v-model="selectedLink.color">
-      </div>
-      <button @click="editLink(selectedLink)">Edit Link</button>
-      <button @click="deleteLink(selectedLink)">Delete</button>
+      <EditLink :selectedLink="selectedLink" section="fun" @reset="reset" />
     </div>
 
     <p></p>
@@ -44,7 +31,6 @@
     <button @click="toggleEdit">Done</button>
     <p></p>
   </div>
-
 </div>
 </template>
 
@@ -52,6 +38,7 @@
 import axios from 'axios';
 import InnerLink from "../components/innerLink.vue";
 import OuterLink from "../components/outerLink.vue";
+import DisabledLink from "../components/disabledLink.vue";
 import EditLink from "../components/editLink.vue";
 export default {
   name: 'Fun',
@@ -65,7 +52,8 @@ export default {
   components: {
     InnerLink,
     OuterLink,
-    EditLink
+    DisabledLink,
+    EditLink,
   },
   created() {
     this.getLinks();
@@ -86,47 +74,13 @@ export default {
     selectLink(link) {
       this.selectedLink = link;
     },
-    async editLink(link) {
-      try {
-        await axios.put("/api/funlinks/" + link._id, {
-          text: link.text,
-          link: link.link,
-          color: link.color,
-        });
-        this.selectedLink = null;
-        this.getLinks();
-        return true;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async deleteLink(link) {
-      try {
-        await axios.delete("/api/funlinks/" + link._id);
-        this.selectedLink = null;
-        this.getLinks();
-        return true;
-      } catch (error) {
-        console.log(error);
-      }
+    reset() {
+      this.selectedLink = null;
+      this.getLinks();
     },
   }
 }
 </script>
 
 <style scoped>
-.editRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 80%;
-}
-
-.editRow input {
-  height: 25px;
-}
-
-button {
-  margin: 5px 5px 10px 5px;
-}
 </style>

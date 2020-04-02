@@ -30,7 +30,7 @@
     </form>
   </div>
   <div v-if="added">
-    <EditLink :text="added.text" :color="added.color" />
+    <DisabledLink :text="added.text" :color="added.color" />
     <p>Link added to {{newSection}} links.</p>
   </div>
 </div>
@@ -39,12 +39,12 @@
 <script>
 import axios from 'axios';
 import InnerLink from "../components/innerLink.vue";
-import EditLink from "../components/editLink.vue";
+import DisabledLink from "../components/disabledLink.vue";
 export default {
   name: "Create",
   components: {
     InnerLink,
-    EditLink,
+    DisabledLink,
   },
   data() {
     return {
@@ -77,11 +77,14 @@ export default {
         let r = await axios.post('/api/funlinks', newLink);
         this.added = r.data;
       } else if (this.newSection === 'Work') {
-        this.$root.$data.workLinks.push(newLink);
+        let r = await axios.post('/api/worklinks', newLink);
+        this.added = r.data;
       } else if (this.newSection === 'School') {
-        this.$root.$data.schoolLinks.push(newLink);
+        let r = await axios.post('/api/schoollinks', newLink);
+        this.added = r.data;
       } else if (this.newSection === 'Other') {
-        this.$root.$data.otherLinks.push(newLink);
+        let r = await axios.post('/api/otherlinks', newLink);
+        this.added = r.data;
       }
     }
   }
