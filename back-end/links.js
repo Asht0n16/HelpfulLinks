@@ -68,7 +68,7 @@ router.put('/:id', validUser, async (req, res) => {
     link.link = req.body.link;
     link.color = req.body.color;
     link.section = req.body.section;
-    link.save();
+    await link.save();
     res.send(link);
   } catch (error) {
     console.log(error);
@@ -90,5 +90,6 @@ router.delete('/:id', validUser, async (req, res) => {
 });
 
 module.exports = {
-  routes: router
+  routes: router,
+  model: Link,
 }
