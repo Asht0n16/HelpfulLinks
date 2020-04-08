@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const argon2 = require('argon2');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,233 +15,30 @@ mongoose.connect('mongodb://localhost:27017/helpfullinks', {
   useUnifiedTopology: true
 });
 
-// Create a link Schema
-const linkSchema = new mongoose.Schema({
-  text: String,
-  link: String,
-  color: String,
-});
+// set up cookies
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
-// Create models for each type of link
-const FunLinks = mongoose.model('FunLink', linkSchema);
-const WorkLinks = mongoose.model('WorkLink', linkSchema);
-const SchoolLinks = mongoose.model('SchoolLink', linkSchema);
-const OtherLinks = mongoose.model('OtherLink', linkSchema);
-
-//-----Fun Links Section-----\\
-app.get('/api/funlinks', async (req, res) => {
-  try {
-    let list = await FunLinks.find();
-    res.send(list);
-  }catch(error){
-    console.log(error);
-    res.sendStatus(500);
+const cookieSession = require("cookie-session");
+app.use(cookieSession({
+  name: 'session',
+  keys: ['secretValue'],
+  cookie: {
+    maxAge: 60*60*1000 // 1 hour
   }
-});
+}));
 
-app.post('/api/funlinks', async (req, res) => {
-  const link = new FunLinks({
-    text: req.body.text,
-    link: req.body.link,
-    color: req.body.color,
-  });
-  try {
-    await link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// import the users module
+const users = require("./users.js");
+app.use("/api/users", users.routes);
 
-app.put('/api/funlinks/:id', async (req, res) => {
-  try {
-    let link = await FunLinks.findOne({
-      _id: req.params.id
-    });
-    link.text = req.body.text;
-    link.link = req.body.link;
-    link.color = req.body.color;
-    link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// import the links module
+const links = require("./links.js");
+app.use("/api/links", links.routes);
 
-app.delete('/api/funlinks/:id', async (req, res) => {
-  try {
-    await FunLinks.deleteOne({
-      _id: req.params.id
-    });
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
+// import the sections module
+const sections = require("./section.js");
+app.use("/api/sections", sections.routes);
 
-//-----Work Links Section-----\\
-app.get('/api/worklinks', async (req, res) => {
-  try {
-    let list = await WorkLinks.find();
-    res.send(list);
-  }catch(error){
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.post('/api/worklinks', async (req, res) => {
-  const link = new WorkLinks({
-    text: req.body.text,
-    link: req.body.link,
-    color: req.body.color,
-  });
-  try {
-    await link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.put('/api/worklinks/:id', async (req, res) => {
-  try {
-    let link = await WorkLinks.findOne({
-      _id: req.params.id
-    });
-    link.text = req.body.text;
-    link.link = req.body.link;
-    link.color = req.body.color;
-    link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.delete('/api/worklinks/:id', async (req, res) => {
-  try {
-    await WorkLinks.deleteOne({
-      _id: req.params.id
-    });
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-//-----School Links Section-----\\
-app.get('/api/schoollinks', async (req, res) => {
-  try {
-    let list = await SchoolLinks.find();
-    res.send(list);
-  }catch(error){
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.post('/api/schoollinks', async (req, res) => {
-  const link = new SchoolLinks({
-    text: req.body.text,
-    link: req.body.link,
-    color: req.body.color,
-  });
-  try {
-    await link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.put('/api/schoollinks/:id', async (req, res) => {
-  try {
-    let link = await SchoolLinks.findOne({
-      _id: req.params.id
-    });
-    link.text = req.body.text;
-    link.link = req.body.link;
-    link.color = req.body.color;
-    link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.delete('/api/schoollinks/:id', async (req, res) => {
-  try {
-    await SchoolLinks.deleteOne({
-      _id: req.params.id
-    });
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-//-----Other Links Section-----\\
-app.get('/api/otherlinks', async (req, res) => {
-  try {
-    let list = await OtherLinks.find();
-    res.send(list);
-  }catch(error){
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.post('/api/otherlinks', async (req, res) => {
-  const link = new OtherLinks({
-    text: req.body.text,
-    link: req.body.link,
-    color: req.body.color,
-  });
-  try {
-    await link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.put('/api/otherlinks/:id', async (req, res) => {
-  try {
-    let link = await OtherLinks.findOne({
-      _id: req.params.id
-    });
-    link.text = req.body.text;
-    link.link = req.body.link;
-    link.color = req.body.color;
-    link.save();
-    res.send(link);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-app.delete('/api/otherlinks/:id', async (req, res) => {
-  try {
-    await OtherLinks.deleteOne({
-      _id: req.params.id
-    });
-    res.sendStatus(200);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
+// listen on port 3001
 app.listen(3001, () => console.log('Server listening on port 3001!'));

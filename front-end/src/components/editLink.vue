@@ -1,19 +1,26 @@
 <template>
 <div class="edit">
-  <div class="editRow">
-    <p>Name:</p>
-    <input v-model="selectedLink.text">
-  </div>
-  <div class="editRow">
-    <p>Link:</p>
-    <input v-model="selectedLink.link">
-  </div>
-  <div class="editRow">
-    <p>Color:</p>
-    <input v-model="selectedLink.color">
-  </div>
-  <button @click="editLink(selectedLink)">Edit Link</button>
-  <button @click="deleteLink(selectedLink)">Delete</button>
+  <form class="pure-form pure-form-stacked" id="editLink" @submit.prevent="">
+    <label for="name">Name:</label>
+    <input id="name" v-model="selectedLink.text">
+
+    <label for="link">Link:</label>
+    <input id="link" v-model="selectedLink.link">
+
+    <label for="color">Color:</label>
+    <input id="color" v-model="selectedLink.color">
+
+    <label for="section">Section:</label>
+    <select id="section" v-model="selectedLink.section">
+      <option>Fun</option>
+      <option>Work</option>
+      <option>School</option>
+      <option>Other</option>
+    </select>
+
+    <button @click="editLink(selectedLink)">Edit Link</button>
+    <button @click="deleteLink(selectedLink)">Delete</button>
+  </form>
 </div>
 </template>
 
@@ -23,7 +30,6 @@ export default {
   name: 'EditLink',
   props: {
     selectedLink: Object,
-    section: String,
   },
   methods: {
     async editLink(link) {
@@ -32,8 +38,9 @@ export default {
           text: link.text,
           link: link.link,
           color: link.color,
+          section: link.section,
         }
-        await axios.put("/api/" + this.section + "links/" + link._id, newLink);
+        await axios.put("/api/links/" + link._id, newLink);
         this.$emit('reset');
         return true;
       } catch (error) {
@@ -42,7 +49,7 @@ export default {
     },
     async deleteLink(link) {
       try {
-        await axios.delete("/api/" + this.section + "links/" + link._id);
+        await axios.delete("/api/links/" + link._id);
         this.$emit('reset');
         return true;
       } catch (error) {
@@ -56,7 +63,7 @@ export default {
 <style scoped>
 .edit {
   margin: 0 auto;
-  width: 75%;
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,7 +74,7 @@ export default {
   margin: 5px;
 }
 
-.editRow {
+/*.editRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,5 +83,5 @@ export default {
 
 .editRow input {
   height: 25px;
-}
+}*/
 </style>

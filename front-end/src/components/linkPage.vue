@@ -3,7 +3,7 @@
   <InnerLink text="Home" link="/" color="#5ff6a6" />
 
   <div v-if="!edit">
-    <h1>Fun Links!</h1>
+    <h1>{{section}} Links!</h1>
     <div class="buttonLinks">
       <!-- Here's the loop that will go through all links in the array once I can get data to be permanent-->
       <OuterLink v-for="link in links" :key="link.text" :text="link.text" :link="link.link" :color="link.color" />
@@ -43,13 +43,9 @@ import OuterLink from "../components/outerLink.vue";
 import DisabledLink from "../components/disabledLink.vue";
 import EditLink from "../components/editLink.vue";
 export default {
-  name: 'Fun',
-  data() {
-    return {
-      links: [],
-      edit: false,
-      selectedLink: null,
-    }
+  name: 'linkPage',
+  props: {
+    section: String,
   },
   components: {
     InnerLink,
@@ -57,6 +53,14 @@ export default {
     DisabledLink,
     EditLink,
   },
+  data() {
+    return {
+      links: [],
+      edit: false,
+      selectedLink: null,
+    }
+  },
+
   created() {
     this.getLinks();
   },

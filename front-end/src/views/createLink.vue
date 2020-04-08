@@ -33,6 +33,7 @@
     <DisabledLink :text="added.text" :color="added.color" />
     <p>Link added to {{newSection}} links.</p>
   </div>
+  <h2 v-if="error">{{error}}</h2>
 </div>
 </template>
 
@@ -52,11 +53,19 @@ export default {
       newText: '',
       newAddress: '',
       newColor: '',
-      added: null
+      added: null,
+      error: '',
     }
   },
   methods: {
     async createLink() {
+      // ensure all required fields are given
+      if (this.newSection === '' || this.newText === '' || this.newAddress === '' || this.newColor === '') {
+        this.error = "Missing required information. Please fill each box.";
+        return;
+      }
+
+      // Get color hex
       let newColor = '';
       if (this.newColor === 'Green') {
         newColor = '#5ff6a6';
@@ -67,24 +76,22 @@ export default {
       } else if (this.newColor === 'Yellow') {
         newColor = "#f2e35a";
       }
+
+      // Create new link object
       let newLink = {
         text: this.newText,
         link: this.newAddress,
-        color: newColor
+        color: newColor,
+        user: this.$root.$data.user,
+        section: this.newSection,
       };
-
-      if (this.newSection === 'Fun') {
-        let r = await axios.post('/api/funlinks', newLink);
+      try {
+        // send link to correct collection
+        let r = await axios.post('/api/links', newLink);
         this.added = r.data;
-      } else if (this.newSection === 'Work') {
-        let r = await axios.post('/api/worklinks', newLink);
-        this.added = r.data;
-      } else if (this.newSection === 'School') {
-        let r = await axios.post('/api/schoollinks', newLink);
-        this.added = r.data;
-      } else if (this.newSection === 'Other') {
-        let r = await axios.post('/api/otherlinks', newLink);
-        this.added = r.data;
+      } catch (error) {
+        console.log(error);
+        this.error = error;
       }
     }
   }

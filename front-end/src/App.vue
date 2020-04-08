@@ -1,12 +1,27 @@
 <template>
 <div id="app">
-  <h1>Ashton's Helpful Links!</h1>
+  <div class="header">
+    <h1 v-if="user">{{user.firstName}}'s Helpful Links</h1>
+    <h1 v-else>Ashton's Helpful Links</h1>
+  </div>
   <router-view />
   <div class="footer">
     <a href="https://github.com/Asht0n16/CS260-CP3" target="_blank">GitHub Repo</a>
   </div>
 </div>
 </template>
+
+<script>
+//import axios from 'axios';
+export default {
+  name: "App",
+  computed: {
+    user() {
+      return this.$root.$data.user;
+    }
+  },
+}
+</script>
 
 <style>
 body {
@@ -35,6 +50,18 @@ body {
     flex-flow: column nowrap;
     align-items: center;
   }
+}
+
+.header {
+  margin: auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header button {
+  height: 35px;
 }
 
 .linkPage,
