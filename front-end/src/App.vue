@@ -64,11 +64,18 @@ body {
   height: 35px;
 }
 
-.linkPage,
 .home {
   width: 70%;
   margin: 0 auto;
   margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.linkPage {
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;

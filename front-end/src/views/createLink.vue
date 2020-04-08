@@ -1,6 +1,6 @@
 <template>
 <div class="create">
-  <InnerLink text="Home" link="/" color="#5ff6a6" />
+  <InnerLink text="Back" link="/" color="#5ff6a6" />
   <h1>Create a New Link</h1>
   <div class="formContainer">
     <form class="pure-form pure-form-stacked" id="newLink" @submit.prevent="createLink()">
@@ -9,7 +9,8 @@
         <option>Fun</option>
         <option>Work</option>
         <option>School</option>
-        <option>Other</option>
+
+        <option v-for="section in sections" :key="section._id">{{section.name}}</option>
       </select>
 
       <label for="newText">Insert the text to be on the new link.</label>
@@ -42,7 +43,7 @@ import axios from 'axios';
 import InnerLink from "../components/innerLink.vue";
 import DisabledLink from "../components/disabledLink.vue";
 export default {
-  name: "Create",
+  name: "CreateLink",
   components: {
     InnerLink,
     DisabledLink,
@@ -55,15 +56,35 @@ export default {
       newColor: '',
       added: null,
       error: '',
+      sections: [],
     }
   },
+  created() {
+    this.getSections();
+  },
   methods: {
+    async getSections() {
+      try {
+        let response = await axios.get('/api/sections');
+        this.sections = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async createLink() {
       // ensure all required fields are given
       if (this.newSection === '' || this.newText === '' || this.newAddress === '' || this.newColor === '') {
+        this.added = null;
         this.error = "Missing required information. Please fill each box.";
         return;
       }
+      if (this.newAddress.search('http') === -1) {
+        this.added = null;
+        this.error = "New address is missing http[s]://";
+        return;
+      }
+      // Clear error code
+      this.error = '';
 
       // Get color hex
       let newColor = '';

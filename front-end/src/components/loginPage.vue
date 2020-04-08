@@ -86,6 +86,7 @@ export default {
         this.username = '';
         this.password = '';
         this.$root.$data.user = response.data.user;
+        this.$emit('resetUser');
       } catch (error) {
         this.error = error.response.data.message;
         this.$root.$data.user = null;
@@ -107,6 +108,7 @@ export default {
         this.loginUsername = '';
         this.loginPassword = '';
         this.$root.$data.user = response.data.user;
+        this.$emit('resetUser');
       } catch (error) {
         this.errorLogin = "Error: " + error.response.data.message;
         this.$root.$data.user = null;

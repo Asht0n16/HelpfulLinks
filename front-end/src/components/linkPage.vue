@@ -1,6 +1,6 @@
 <template>
 <div class="linkPage">
-  <InnerLink text="Home" link="/" color="#5ff6a6" />
+  <SectionLink name="Home" color="#5ff6a6" />
 
   <div v-if="!edit">
     <h1>{{section}} Links!</h1>
@@ -41,6 +41,7 @@ import axios from 'axios';
 import InnerLink from "../components/innerLink.vue";
 import OuterLink from "../components/outerLink.vue";
 import DisabledLink from "../components/disabledLink.vue";
+import SectionLink from "../components/sectionLink.vue";
 import EditLink from "../components/editLink.vue";
 export default {
   name: 'linkPage',
@@ -51,6 +52,7 @@ export default {
     InnerLink,
     OuterLink,
     DisabledLink,
+    SectionLink,
     EditLink,
   },
   data() {
@@ -68,8 +70,11 @@ export default {
     async getLinks() {
       try {
         let response = await axios.get("/api/links");
-        console.log(response);
-        this.links = response.data;
+        let pageSection = this.section;
+        let links = response.data.filter((link) => {
+          return link.section === pageSection;
+        });
+        this.links = links;
         return true;
       } catch (error) {
         console.log(error);

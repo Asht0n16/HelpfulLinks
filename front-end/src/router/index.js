@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Fun from '../views/funLinks.vue'
-import Work from '../views/workLinks.vue'
-import School from '../views/schoolLinks.vue'
-import Create from '../views/createLink.vue'
+import CreateLink from '../views/createLink.vue'
+import CreateSection from "../views/createSection.vue"
 
 Vue.use(VueRouter)
 
@@ -15,25 +13,15 @@ const routes = [
     component: Home
   },
   {
-    path: '/funLinks',
-    name: 'Fun',
-    component: Fun
-  },
-  {
-    path: '/workLinks',
-    name: 'Work',
-    component: Work
-  },
-  {
-    path: '/schoolLinks',
-    name: 'School',
-    component: School
-  },
-  {
     path: '/createLink',
-    name: 'Create',
-    component: Create
-  }
+    name: 'CreateLink',
+    component: CreateLink
+  },
+  {
+    path: '/createSection',
+    name: 'CreateSection',
+    component: CreateSection
+  },
 
 ]
 

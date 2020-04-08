@@ -76,7 +76,7 @@ router.delete('/:id', validUser, async (req, res) => {
     // delete all links in the section
     await Link.deleteMany({
       user: req.user,
-      section: section,
+      section: section.name,
     });
     // delete section
     await Section.deleteOne({

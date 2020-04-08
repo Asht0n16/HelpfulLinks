@@ -15,7 +15,8 @@
       <option>Fun</option>
       <option>Work</option>
       <option>School</option>
-      <option>Other</option>
+
+      <option v-for="section in sections" :key="section._id">{{section.name}}</option>
     </select>
 
     <button @click="editLink(selectedLink)">Edit Link</button>
@@ -31,7 +32,25 @@ export default {
   props: {
     selectedLink: Object,
   },
+  data() {
+    return {
+      sections: [],
+    }
+  },
+
+  created() {
+    this.getSections();
+  },
   methods: {
+    async getSections() {
+      try {
+        let response = await axios.get('/api/sections');
+        this.sections = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async editLink(link) {
       try {
         let newLink = {
